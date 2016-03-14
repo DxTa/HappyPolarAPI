@@ -3,3 +3,7 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  div.loginform
+   form.form-signin(method="post")
+    h1.form-signin-heading.text-muted
+    a(href="/auth/facebook" class="btn btn-primary btn-block btn-large") Facebook Login
