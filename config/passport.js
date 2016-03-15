@@ -1,4 +1,7 @@
-// config/passport.js
+/*
+  This is where we configure Strategy for Facebook login 
+  (and/or other passport login method)
+*/
 
 // load all the things we need
 var FacebookStrategy = require('passport-facebook').Strategy;
