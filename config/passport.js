@@ -5,6 +5,7 @@
 
 // load all the things we need
 var FacebookStrategy = require('passport-facebook').Strategy;
+var FacebookTokenStrategy = require('passport-facebook-token');
 
 // load up the user model
 var User       = require('../models/user');
@@ -30,18 +31,35 @@ module.exports = function(passport) {
   // code for signup (use('local-signup', new LocalStategy))
 
   // =========================================================================
-  // FACEBOOK ================================================================
+  // FACEBOOK WEB================================================================
   // =========================================================================
   passport.use(new FacebookStrategy({
-    // pull in our app id and secret from our auth.js file
-    clientID        : configAuth.facebookAuth.clientID,
-    clientSecret    : configAuth.facebookAuth.clientSecret,
-    callbackURL     : configAuth.facebookAuth.callbackURL,
-    profileFields   : ["emails", "displayName"]
-  },
+      // pull in our app id and secret from our auth.js file
+      clientID        : configAuth.facebookAuth.clientID,
+      clientSecret    : configAuth.facebookAuth.clientSecret,
+      callbackURL     : configAuth.facebookAuth.callbackURL,
+      profileFields   : ["emails", "displayName"]
+    },
+    function (token, refreshToken, profile, done) {
+      loginOrCreateProfile(token, refreshToken, profile, done);
+    }
+  ));
 
-  // facebook will send back the token and profile
-  function(token, refreshToken, profile, done) {
+  // =========================================================================
+  // FACEBOOK CLIENT APP======================================================
+  // =========================================================================
+  passport.use(new FacebookTokenStrategy({
+      clientID: configAuth.facebookAuth.clientID,
+      clientSecret: configAuth.facebookAuth.clientSecret
+    },
+    function (token, refreshToken, profile, done) {
+      loginOrCreateProfile(token, refreshToken, profile, done);
+    }
+  ));
+
+
+    // facebook will send back the token and profile
+  function loginOrCreateProfile(token, refreshToken, profile, done) {
     console.log('token:'+token);
     console.log('refreshToken:'+refreshToken);
     console.log('profile:'+JSON.stringify(profile));
@@ -88,6 +106,6 @@ module.exports = function(passport) {
       });
     });
 
-  }));
+  }
 
 };
