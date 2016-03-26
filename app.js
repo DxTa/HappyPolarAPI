@@ -17,6 +17,21 @@ var app = express();
 
 var configDB = require('./config/database.js');
 
+var whiteList = {
+    "http://localhost:3000": true,
+    "http://happypolar.fi:3000": true
+};
+var allowCrossDomain = function(req, res, next) {
+        if(whiteList[req.get('Origin')]){
+            res.header('Access-Control-Allow-Credentials', true);
+            res.header('Access-Control-Allow-Origin', req.get('Origin'));
+            res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+            res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With, Origin, Accept');
+            next();
+        }
+};
+app.use(allowCrossDomain);
+
 //configuration
 require('./config/passport')(passport);
 mongoose.connect(configDB.url); // connect to our database
