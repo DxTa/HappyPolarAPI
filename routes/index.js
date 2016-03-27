@@ -29,11 +29,13 @@ router.get('/profile', function(req, res, next) {
 
 /**
  * @api {get} /auth/facebook Facebook Web Authentication
+ * @apiVersion 0.1.0
  * @apiName GetFacebook
  * @apiGroup Authentication
  *
  * @apiSuccess successRedirect '/profile'
  * @apiError failureRedirect '/'
+ * @apiSampleRequest off
  */
 router.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
 
