@@ -2,9 +2,16 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 
+
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
+});
+
+/* GET doc page. */
+router.get('/doc', function(req, res, next) {
+  res.render('doc');
 });
 
 /* Profile page. */
@@ -20,7 +27,14 @@ router.get('/profile', function(req, res, next) {
 // =====================================
 // route for facebook authentication and login
 
-// WEB Authentication
+/**
+ * @api {get} /auth/facebook Facebook Web Authentication
+ * @apiName GetFacebook
+ * @apiGroup Authentication
+ *
+ * @apiSuccess successRedirect '/profile'
+ * @apiError failureRedirect '/'
+ */
 router.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
 
 // handle the callback after facebook has authenticated the user
