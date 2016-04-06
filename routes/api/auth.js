@@ -22,7 +22,7 @@ module.exports = function(router) {
   // handle the callback after facebook has authenticated the user
   router.get('/auth/facebook/callback',
       passport.authenticate('facebook', {
-          successRedirect : '/profile',
+          successRedirect : '/users',
           failureRedirect : '/'
       }));
 
