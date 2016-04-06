@@ -1,5 +1,5 @@
 var passport = require('passport');
-var User = require('../../models/user');
+var UserService = require('../../services/user');
 
 module.exports = function(router) {
   /**
@@ -31,7 +31,7 @@ module.exports = function(router) {
   */
   router.get('/users', function(req, res, next) {
     console.log('find ALL');
-    User.find(function(err,users) {
+    UserService.index(req,function(err,users) {
       if (err) {
         console.log('error:'+err);
         res.status(404);
@@ -74,7 +74,7 @@ module.exports = function(router) {
   */
   router.get('/users/:id', function(req, res, next) {
     console.log('find One');
-    User.findById(req.params.id, function(err,user) {
+    UserService.show(req, function(err,user) {
       if (err) {
         console.log('error:'+err);
         res.status(404);
@@ -108,21 +108,7 @@ module.exports = function(router) {
   *     }
   */
   router.put('/users/:id', function(req, res, next) {
-    var update = {};
-    var options = {
-      'new': true
-    };
-    console.log(req.body);
-    if (req.body.name)
-      update.name = req.body.name;
-    if (req.body.age)
-      update.age = req.body.age;
-    if (req.body.height)
-      update.height = req.body.height;
-    if (req.body.height)
-      update.weight = req.body.weight;
-    console.log(update);
-    User.findOneAndUpdate(req.params.id, update, options, function(err,user) {
+    UserService.update(req,function(err,user) {
       if (err) {
         console.log('error:'+err);
         res.status(404);
@@ -156,23 +142,13 @@ module.exports = function(router) {
   *     }
   */
   router.post('/users/', function(req, res, next) {
-    var user = new User();      // create a new instance of the Bear model
-    if (req.body.name)
-      user.name = req.body.name;
-    if (req.body.age)
-      user.age = req.body.age;
-    if (req.body.height)
-      user.height = req.body.height;
-    if (req.body.height)
-      user.weight = req.body.weight;
-    // save the bear and check for errors
-    user.save(function(err, user) {
-        if (err)
-            res.send(err);
-        res.json({
-          message: 'User created!',
-          user: user
-        });
+    UserService.create(function(err, user) {
+      if (err)
+          res.send(err);
+      res.json({
+        message: 'User created!',
+        user: user
+      });
     });
   });
 
@@ -197,11 +173,9 @@ module.exports = function(router) {
   *     }
   */
   router.delete('/users/:id', function(req, res, next) {
-    User.remove({
-        _id: req.params.id
-    }, function(err, user) {
+    UserService.destroy(req, function(err, user) {
       if (err) {
-    console.log('error:'+err);
+        console.log('error:'+err);
         res.status(404);
         res.json({ error: 'UserNotFound' });
       }
