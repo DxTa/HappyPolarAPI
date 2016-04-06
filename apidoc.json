@@ -2,5 +2,5 @@
   "name": "HappyPolar",
   "version": "0.1.0",
   "description": "API Documentation",
-  "sampleUrl": "http://happypolar.fi:3000"
+  "sampleUrl": "http://happypolar.fi:3000/api"
 }
