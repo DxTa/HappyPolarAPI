@@ -7,6 +7,11 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+/* GET home page. */
+router.get('/profile', function(req, res, next) {
+  res.render('index', { title: 'Express' });
+});
+
 /* GET User Profile page. */
 router.get('/users', function(req, res, next) {
  res.render('users', {

@@ -13,3 +13,4 @@ node_modules
 
 # apiDoc
 public/doc
+public/bundle.js.map
