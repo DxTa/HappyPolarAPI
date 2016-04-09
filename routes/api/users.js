@@ -30,14 +30,12 @@ module.exports = function(router) {
   *
   */
   router.get('/users', function(req, res, next) {
-    console.log('find ALL');
     UserService.index(req,function(err,users) {
       if (err) {
         console.log('error:'+err);
         res.status(404);
-        res.json({ error: 'UserNotFound' });
+        res.json({ error: err });
       }
-      console.log('error:'+err);
       res.json(users);
     });
   });
@@ -69,18 +67,19 @@ module.exports = function(router) {
   * @apiErrorExample Error-Response:
   *     HTTP/1.1 404 Not Found
   *     {
-  *       "error": "UserNotFound"
+  *       "error": "Error Message"
   *     }
   */
   router.get('/users/:id', function(req, res, next) {
-    console.log('find One');
     UserService.show(req, function(err,user) {
       if (err) {
         console.log('error:'+err);
         res.status(404);
-        res.render('UserNotFound');
+        res.json({ error: err });
       }
-      res.json(user);
+      else {
+        res.json(user);
+      }
     });
   });
 
@@ -112,7 +111,7 @@ module.exports = function(router) {
       if (err) {
         console.log('error:'+err);
         res.status(404);
-        res.json({ error: 'UserNotFound' });
+        res.json({ error: err });
       }
       res.json(user);
     });
@@ -143,8 +142,11 @@ module.exports = function(router) {
   */
   router.post('/users/', function(req, res, next) {
     UserService.create(function(err, user) {
-      if (err)
-          res.send(err);
+      if (err){        
+        console.log('error:'+err);
+        res.status(404);
+        res.json({ error: err });
+      }
       res.json({
         message: 'User created!',
         user: user
@@ -169,7 +171,7 @@ module.exports = function(router) {
   * @apiErrorExample Error-Response:
   *     HTTP/1.1 404 Not Found
   *     {
-  *       "error": "UserNotFound"
+  *       "error": "Error Message"
   *     }
   */
   router.delete('/users/:id', function(req, res, next) {
@@ -177,7 +179,7 @@ module.exports = function(router) {
       if (err) {
         console.log('error:'+err);
         res.status(404);
-        res.json({ error: 'UserNotFound' });
+        res.json({error: err});
       }
       res.json({ message: 'Successfully deleted' });
     });
