@@ -141,7 +141,7 @@ module.exports = function(router) {
   *     }
   */
   router.post('/users/', function(req, res, next) {
-    UserService.create(function(err, user) {
+    UserService.create(req, function(err, user) {
       if (err){        
         console.log('error:'+err);
         res.status(404);

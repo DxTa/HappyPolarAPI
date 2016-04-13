@@ -63,7 +63,7 @@ var create = function(req,callback) {
       user.height = req.body.height;
     if (req.body.height)
       user.weight = req.body.weight;
-    // save the bear and check for errors
+    // save user and check for errors
     user.save(function(err, user) {
       callback(err,user);
     });
@@ -91,7 +91,7 @@ function validate(req){
   console.log('validateRequest');
   var result = {'valid': true};
   //check if valid ObjectId, proceed to findByID
-  if (req.params.id && !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {    
+  if (req.params.id && !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
     console.log('Invalid ObjectId');
     result.valid = false;
     result.error = 'Invalid ObjectId';
