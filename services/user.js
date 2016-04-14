@@ -1,7 +1,8 @@
 var User = require('../models/user');
+var Utils = require('../services/utils');
 
 var index = function(params,callback) {
-  var validatedRequest = validate(params.req);
+  var validatedRequest = Utils.validate(params.req);
   if (validatedRequest.valid == true) {
     User.find(function(err,users) {
       callback(err,users);
@@ -13,7 +14,7 @@ var index = function(params,callback) {
 }
 
 var show = function(params,callback) {
-  var validatedRequest = validate(params.req);
+  var validatedRequest = Utils.validate(params.req);
   if (validatedRequest.valid == true) {
     console.log('findById');
     User.findById(params.req.params.id, function(err,user) {
@@ -26,7 +27,7 @@ var show = function(params,callback) {
 }
 
 var update = function(params,callback) {
-  var validatedRequest = validate(params.req);
+  var validatedRequest = Utils.validate(params.req);
   if (validatedRequest.valid == true) {
     var update = {};
     var params = {
@@ -57,7 +58,7 @@ var create = function(params,callback) {
   var user = new User();
   // If create with POST
   if (params.req) {
-    var validatedRequest = validate(params.req);
+    var validatedRequest = Utils.validate(params.req);
     if (validatedRequest.valid == true) {
       // create a new instance of the Bear model
       if (params.req.body.name)
@@ -92,7 +93,7 @@ var create = function(params,callback) {
 }
 
 var destroy = function(params,callback) {
-  var validatedRequest = validate(params.req);
+  var validatedRequest = Utils.validate(params.req);
   if (validatedRequest.valid == true) {
     User.remove({
       _id: params.req.params.id
@@ -103,18 +104,6 @@ var destroy = function(params,callback) {
   else{
     callback(validatedRequest.error);
   }
-}
-
-function validate(req){
-  console.log('validateRequest');
-  var result = {'valid': true};
-  //check if valid ObjectId, proceed to findByID
-  if (req.params.id && !req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-    console.log('Invalid ObjectId');
-    result.valid = false;
-    result.error = 'Invalid ObjectId';
-  }
-  return result;
 }
 
 module.exports = {
