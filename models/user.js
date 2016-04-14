@@ -9,6 +9,13 @@ var userSchema = mongoose.Schema({
   age         : Number,
   height      : Number,
   weight      : Number,
+  gender      : {
+    type: String, 
+    enum: [
+      'male', 'female', 'unknown'
+    ],
+    default: 'unknown'
+  },
   facebook         : {
     id           : String,
     token        : String,

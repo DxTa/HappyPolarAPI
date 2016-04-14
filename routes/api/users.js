@@ -18,7 +18,9 @@ module.exports = function(router) {
           res.status(404);
           res.json({ error: err });
         }
-        res.json(users);
+        else {
+          res.json(users);
+        }
       });
     })
 
@@ -28,10 +30,11 @@ module.exports = function(router) {
     * @apiName PostUser
     * @apiGroup User
     *
-    * @apiParam {String} name User new name.
-    * @apiParam {Number} age User new age.
-    * @apiParam {Number} height User new height.
-    * @apiParam {Number} weight User new weight.
+    * @apiParam {String} name User name.
+    * @apiParam {Number} age User age.
+    * @apiParam {Number} height User  height.
+    * @apiParam {Number} weight User weight.
+    * @apiParam {String} gender User gender.
     */
     .post(function(req, res, next) {
       UserService.create({
@@ -42,10 +45,12 @@ module.exports = function(router) {
           res.status(404);
           res.json({ error: err });
         }
-        res.json({
-          message: 'User created!',
-          user: user
-        });
+        else {
+          res.json({
+            message: 'User created!',
+            user: user
+          });
+        }
       });
     });
   
@@ -83,6 +88,7 @@ module.exports = function(router) {
     * @apiParam {Number} age User new age.
     * @apiParam {Number} height User new height.
     * @apiParam {Number} weight User new weight.
+    * @apiParam {String} gender User new gender.
     */
     .put(function(req, res, next) {
       UserService.update({
@@ -93,7 +99,9 @@ module.exports = function(router) {
           res.status(404);
           res.json({ error: err });
         }
-        res.json(user);
+        else {
+          res.json(user);
+        }
       });
     })
     /**
@@ -113,7 +121,9 @@ module.exports = function(router) {
           res.status(404);
           res.json({error: err});
         }
-        res.json({ message: 'Successfully deleted' });
+        else {
+          res.json({ message: 'Successfully deleted' });
+        }
       });
     });
 }

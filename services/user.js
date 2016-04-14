@@ -41,6 +41,8 @@ var update = function(params,callback) {
       update.height = params.req.body.height;
     if (params.req.body.height)
       update.weight = params.req.body.weight;
+    if (params.req.body.gender)
+      update.gender = params.req.body.gender;
 
     User.findOneAndUpdate(params.req.params.id, update, params, function(err,user) {
       callback(err,user);
@@ -66,6 +68,8 @@ var create = function(params,callback) {
         user.height = params.req.body.height;
       if (params.req.body.height)
         user.weight = params.req.body.weight;
+      if (params.req.body.gender)
+        user.gender = params.req.body.gender;
     }
     else{
       callback(validatedRequest.error);
