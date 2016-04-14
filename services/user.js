@@ -30,10 +30,10 @@ var update = function(params,callback) {
   var validatedRequest = Utils.validate(params.req);
   if (validatedRequest.valid == true) {
     var update = {};
-    var params = {
-      'new': true
+    var options = {
+      'new': true,
+      'runValidators': true
     };
-
     if (params.req.body.name)
       update.name = params.req.body.name;
     if (params.req.body.age)
@@ -45,7 +45,7 @@ var update = function(params,callback) {
     if (params.req.body.gender)
       update.gender = params.req.body.gender;
 
-    User.findOneAndUpdate(params.req.params.id, update, params, function(err,user) {
+    User.findOneAndUpdate({"_id":params.req.params.id}, update, function(err,user) {
       callback(err,user);
     });
   }

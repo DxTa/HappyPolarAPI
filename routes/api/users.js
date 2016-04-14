@@ -11,7 +11,7 @@ module.exports = function(router) {
     */
     .get(function(req, res, next) {
       UserService.index({
-          'req':req
+          'req': req
         },function(err,users) {
         if (err) {
           console.log('error:'+err);
@@ -38,7 +38,7 @@ module.exports = function(router) {
     */
     .post(function(req, res, next) {
       UserService.create({
-          'req':req
+          'req': req
         }, function(err, user) {
         if (err){        
           console.log('error:'+err);
@@ -65,7 +65,7 @@ module.exports = function(router) {
     */
     .get(function(req, res, next) {
       UserService.show({
-          'req':req
+          'req': req
         }, function(err,user) {
         if (err) {
           console.log('error:'+err);
@@ -78,7 +78,7 @@ module.exports = function(router) {
       });
     })
     /**
-    * @api {put} /users/:id update a single User information
+    * @api {put} /users/:id update an User
     * @apiVersion 0.1.0
     * @apiName PutUser
     * @apiGroup User
@@ -92,7 +92,7 @@ module.exports = function(router) {
     */
     .put(function(req, res, next) {
       UserService.update({
-          'req':req
+          'req': req
         }, function(err,user) {
         if (err) {
           console.log('error:'+err);
