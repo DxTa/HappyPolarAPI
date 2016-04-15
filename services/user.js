@@ -45,7 +45,7 @@ var update = function(params,callback) {
     if (params.req.body.gender)
       update.gender = params.req.body.gender;
 
-    User.findOneAndUpdate({"_id":params.req.params.id}, update, function(err,user) {
+    User.findOneAndUpdate({"_id":params.req.params.id}, update, options, function(err,user) {
       callback(err,user);
     });
   }
