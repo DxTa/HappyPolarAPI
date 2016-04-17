@@ -3,12 +3,13 @@
   (and/or other passport login method)
 */
 
-// load all the things we need
+// load passport
 var FacebookStrategy = require('passport-facebook').Strategy;
 var FacebookTokenStrategy = require('passport-facebook-token');
 
-// load up the user model
+// load model and service
 var User       = require('../models/user');
+var UserService = require('../services/user');
 
 // load the auth variables
 var configAuth = require('./auth')
@@ -82,24 +83,18 @@ module.exports = function(passport) {
         } else {
 
           console.log('No User Found. Creating new user');
-            // if there is no user found with that facebook id, create them
-          var newUser            = new User();
 
-          // set all of the facebook information in our user model
-          newUser.facebook.id    = profile.id; // set the users facebook id                   
-          newUser.facebook.token = token; // we will save the token that facebook provides to the user                    
-          newUser.facebook.name = profile.displayName; // look at the passport user profile to see how names are returned
-          newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+          profile.token = token;
 
-          // save our user to the database
-          newUser.save(function(err) {
-            if (err)
+          UserService.create({
+              'profile':profile
+            },function(err,user) {
+              if (err){        
+                console.log('Passport error:' + err);
                 throw err;
-
-            // if successful, return the new user
-
-            console.log('Save User to DB');
-            return done(null, newUser);
+              }
+              console.log('Save Facebook User to DB');
+              return done(null, user);
           });
         }
 
