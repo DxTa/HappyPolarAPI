@@ -1,4 +1,6 @@
 var passport = require('passport');
+var request = require("request");
+
 // =====================================
 // FACEBOOK ROUTES =====================
 // =====================================
@@ -17,28 +19,25 @@ module.exports = function(router) {
   * @apiError failureRedirect '/'
   * @apiSampleRequest off
   */
-  router.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
-
-  // handle the callback after facebook has authenticated the user
-  router.get('/auth/facebook/callback',
-      passport.authenticate('facebook', {
-          successRedirect : '/users',
-          failureRedirect : '/'
-      }));
+  router.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email,user_friends,public_profiles' }));
 
   // Client App/ Token Authentication
   router.post('/auth/facebook/token',
-      passport.authenticate('facebook-token'),
-      function(req, res) {
-        if (req.user){
-          // do something with req.user
-          res.status(200);
-          res.send(req.user);
-        }
-        else {
-          // authentication failed
-          res.send(401);
-        }
+    passport.authenticate('facebook-token'),
+    function(req, res) {
+      if (req.user){
+        // do something with req.user
+        request("https://graph.facebook.com/me/friends?access_token=" + req.user.facebook.token, function(err, r, body) {
+          console.log(err, body);
+          console.log("Got stuff!");
+        });
+        res.status(200);
+        res.send(req.user);
       }
+      else {
+        // authentication failed
+        res.send(401);
+      }
+    }
   );
 };
