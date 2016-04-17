@@ -21,6 +21,10 @@ var userSchema = mongoose.Schema({
     token        : String,
     email        : String,
     name         : String
+  },
+  calories: {
+    daily: Number,
+    updated_time: Number
   }
 });
 
