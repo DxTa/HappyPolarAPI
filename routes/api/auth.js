@@ -19,7 +19,15 @@ module.exports = function(router) {
   * @apiError failureRedirect '/'
   * @apiSampleRequest off
   */
-  router.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email,user_friends,public_profiles' }));
+  router.get('/auth/facebook', passport.authenticate('facebook', { scope : ['email','user_friends','public_profile'] }));
+
+  // handle the callback after facebook has authenticated the user
+  router.get('/auth/facebook/callback',
+    passport.authenticate('facebook', {
+      successRedirect : '/users',
+      failureRedirect : '/'
+    })
+  );
 
   // Client App/ Token Authentication
   router.post('/auth/facebook/token',
@@ -27,10 +35,6 @@ module.exports = function(router) {
     function(req, res) {
       if (req.user){
         // do something with req.user
-        request("https://graph.facebook.com/me/friends?access_token=" + req.user.facebook.token, function(err, r, body) {
-          console.log(err, body);
-          console.log("Got stuff!");
-        });
         res.status(200);
         res.send(req.user);
       }

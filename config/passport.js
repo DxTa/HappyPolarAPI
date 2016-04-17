@@ -12,8 +12,8 @@ var User       = require('../models/user');
 var UserService = require('../services/user');
 
 // load the auth variables
-var configAuth = require('./auth')
-;
+var configAuth = require('./auth');
+var request = require('request');
 module.exports = function(passport) {
 
   // used to serialize the user for the session
@@ -64,6 +64,11 @@ module.exports = function(passport) {
     // Get images && friend list
     console.log(profile);
     // asynchronous
+    console.log(token)
+    request("https://graph.facebook.com/me/friends?access_token=" + token, function(err, r, body) {
+      console.log(err, body);
+      console.log("Got stuff!");
+    });
     process.nextTick(function() {
       console.log('nextTick');
       // find the user in the database based on their facebook id
