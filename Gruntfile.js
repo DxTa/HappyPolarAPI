@@ -1,10 +1,13 @@
 module.exports = function(grunt) {
+  //Seeding Data
+  var sessionSeeder = require('./seed/session');
+
   var files = {
     api: ['routes/*.js'],
     scripts: ['*.js', 'config/*.js', 'models/*.js','routes/*.js']
   };
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'), 
+    pkg: grunt.file.readJSON('package.json'),
     apidoc: {
       myapp: {
         src: 'routes/',
@@ -53,4 +56,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-concurrent');
 
   grunt.registerTask('default', ['jshint','apidoc','concurrent']);
+
+  grunt.loadTasks('seed');
 };

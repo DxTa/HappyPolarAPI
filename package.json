@@ -29,6 +29,7 @@
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-nodemon": "^0.4.1",
+    "mongoose-seed": "^0.1.5",
     "request": "^2.72.0"
   }
 }
