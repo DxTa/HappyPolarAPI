@@ -2,20 +2,21 @@ var mongoose = require('mongoose');
 
 // define the schema for our user model
 var sessionSchema = mongoose.Schema({
-  user: { 
-    type: mongoose.Schema.Types.ObjectId, 
+  user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
     ref: 'User'
   },
-  exercise: { 
+  exercise_id: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Exercise' 
   },
   start_time: Number,
   end_time: Number,
-  slot: [
+  slot: [ // Represent 1 reported time slot during training
     {
-      timeElapsed: Number,
-      heartRates: Number,
+      secondsElapsed: Number,
+      heartRate: Number,
       location: {
         lat: Number,
         long: Number
