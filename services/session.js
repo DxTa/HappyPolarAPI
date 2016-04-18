@@ -49,9 +49,9 @@ var update = function(params,callback) {
         update.slot.push(slotObj[i]);
       }
     }
-    if (params.req.body.heartRate) {     
-      var heartRateObj = JSON.parse(params.req.body.heartRate);
-      update.heartRate = {
+    if (params.req.body.heart_rate) {     
+      var heartRateObj = JSON.parse(params.req.body.heart_rate);
+      update.heart_rate = {
         min: heartRateObj.min,
         max: heartRateObj.max,
         average: heartRateObj.average
@@ -89,9 +89,9 @@ var create = function(params,callback) {
           session.slot.push(slotObj[i]);
         }
       }
-      if (params.req.body.heartRate) {     
-        var heartRateObj = JSON.parse(params.req.body.heartRate);
-        session.heartRate = {
+      if (params.req.body.heart_rate) {     
+        var heartRateObj = JSON.parse(params.req.body.heart_rate);
+        session.heart_rate = {
           min: heartRateObj.min,
           max: heartRateObj.max,
           average: heartRateObj.average

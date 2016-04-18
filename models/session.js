@@ -11,19 +11,25 @@ var sessionSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Exercise' 
   },
-  start_time: Number,
-  end_time: Number,
+  start_time: {
+    type: Date, 
+    default: Date.now
+  },
+  end_time: {
+    type: Date, 
+    default: Date.now
+  },
   slot: [ // Represent 1 reported time slot during training
     {
-      secondsElapsed: Number,
-      heartRate: Number,
+      seconds_elapsed: Number,
+      heart_rate: Number,
       location: {
         lat: Number,
         long: Number
       }
     }
   ],
-  heartRate: {
+  heart_rate: {
     min: Number,
     max: Number,
     average: Number
