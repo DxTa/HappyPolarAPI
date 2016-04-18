@@ -1,5 +1,5 @@
 /*
-  This is where we configure Strategy for Facebook login 
+  This is where we configure Strategy for Facebook login
   (and/or other passport login method)
 */
 
@@ -12,8 +12,8 @@ var User       = require('../models/user');
 var UserService = require('../services/user');
 
 // load the auth variables
-var configAuth = require('./auth')
-;
+var configAuth = require('./auth');
+var request = require('request');
 module.exports = function(passport) {
 
   // used to serialize the user for the session
@@ -27,7 +27,7 @@ module.exports = function(passport) {
       done(err, user);
     });
   });
-  
+
   // code for login (use('local-login', new LocalStategy))
   // code for signup (use('local-signup', new LocalStategy))
 
@@ -61,11 +61,14 @@ module.exports = function(passport) {
 
     // facebook will send back the token and profile
   function loginOrCreateProfile(token, refreshToken, profile, done) {
-    console.log('token:'+token);
-    console.log('refreshToken:'+refreshToken);
-    console.log('profile:'+JSON.stringify(profile));
-    console.log('done:'+done);
+    // Get images && friend list
+    console.log(profile);
     // asynchronous
+    console.log(token)
+    request("https://graph.facebook.com/me/friends?access_token=" + token, function(err, r, body) {
+      console.log(err, body);
+      console.log("Got stuff!");
+    });
     process.nextTick(function() {
       console.log('nextTick');
       // find the user in the database based on their facebook id
@@ -89,7 +92,7 @@ module.exports = function(passport) {
           UserService.create({
               'profile':profile
             },function(err,user) {
-              if (err){        
+              if (err){
                 console.log('Passport error:' + err);
                 throw err;
               }
