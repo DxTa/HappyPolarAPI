@@ -22,10 +22,7 @@ var userSchema = mongoose.Schema({
     email        : String,
     name         : String
   },
-  calories: {
-    daily: Number,
-    updated_time: Number
-  }
+  score: Number // = total calories
 });
 
 // methods ======================
