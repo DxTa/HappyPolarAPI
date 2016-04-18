@@ -6,6 +6,7 @@
 // load passport
 var FacebookStrategy = require('passport-facebook').Strategy;
 var FacebookTokenStrategy = require('passport-facebook-token');
+var BearerStrategy = require('passport-http-bearer').Strategy;
 
 // load model and service
 var User       = require('../models/user');
@@ -58,6 +59,27 @@ module.exports = function(passport) {
     }
   ));
 
+  // =========================================================================
+  // TOKEN BEARER======================================================
+  // =========================================================================
+  passport.use(
+    new BearerStrategy(
+      function(token, done) {
+        console.log(token);
+        User.findOne({ 'facebook.token':  token},
+          function(err, user) {
+            if(err) {
+              return done(err)
+            }
+            if(!user) {
+              return done(null, false)
+            }
+            return done(null, user, { scope: 'all' })
+          }
+        );
+      }
+    )
+  );
 
     // facebook will send back the token and profile
   function loginOrCreateProfile(token, refreshToken, profile, done) {
@@ -82,7 +104,10 @@ module.exports = function(passport) {
         // if the user is found, then log them in
         if (user) {
           console.log('Existing User Found!');
-          return done(null, user); // user found, return that user
+          user.facebook.token = token;
+          user.save(function(err,doc) {
+            return done(null, user); // user found, return that user
+          })
         } else {
 
           console.log('No User Found. Creating new user');

@@ -9,7 +9,7 @@ module.exports = function(router) {
     * @apiName GetUsers
     * @apiGroup User
     */
-    .get(function(req, res, next) {
+    .get(passport.authenticate('bearer', { session: false }),function(req, res, next) {
       UserService.index({
           'req': req
         },function(err,users) {
@@ -40,7 +40,7 @@ module.exports = function(router) {
       UserService.create({
           'req': req
         }, function(err, user) {
-        if (err){        
+        if (err){
           console.log('error:'+err);
           res.status(404);
           res.json({ error: err });
@@ -53,7 +53,7 @@ module.exports = function(router) {
         }
       });
     });
-  
+
   router.route('/users/:id')
     /**
     * @api {get} /users/:id Get a single User information
@@ -63,7 +63,7 @@ module.exports = function(router) {
     *
     * @apiParam {String} id User ID.
     */
-    .get(function(req, res, next) {
+    .get(passport.authenticate('bearer', { session: false }),function(req, res, next) {
       UserService.show({
           'req': req
         }, function(err,user) {
@@ -90,7 +90,7 @@ module.exports = function(router) {
     * @apiParam {Number} weight User new weight.
     * @apiParam {String} gender User new gender.
     */
-    .put(function(req, res, next) {
+    .put(passport.authenticate('bearer', { session: false }),function(req, res, next) {
       UserService.update({
           'req': req
         }, function(err,user) {
@@ -112,7 +112,7 @@ module.exports = function(router) {
     *
     * @apiParam {String} id User ID.
     */
-    .delete(function(req, res, next) {
+    .delete(passport.authenticate('bearer', { session: false }),function(req, res, next) {
       UserService.destroy({
           'req':req
         }, function(err, user) {
