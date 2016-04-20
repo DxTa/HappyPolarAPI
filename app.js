@@ -36,7 +36,7 @@ app.use(allowCrossDomain);
 
 //configuration
 require('./config/passport')(passport);
-mongoose.connect(configDB.url); // connect to our database
+mongoose.createConnection(configDB.url); // connect to our database
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

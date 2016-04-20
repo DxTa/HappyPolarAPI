@@ -7,8 +7,14 @@ var dailyStatSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'User'
   },
-  createdTime: Number,
-  updatedTime: Number,
+  created_time: {
+    type: Date, 
+    default: Date.now
+  },
+  updated_time: {
+    type: Date, 
+    default: Date.now
+  },
   calories: Number
 });
 

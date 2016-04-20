@@ -31,10 +31,13 @@ module.exports = function(router) {
     * @apiName PostSession
     * @apiGroup Session
     *
-    * @apiParam {Array} heartRates User's heart rate recorded during session [79,82,103].
-    * @apiParam {String} location Session location e.g: {"lat":108,"long":41}.
-    * @apiParam {Array} time Session time.
-    * @apiParam {Number} pulse Session pulse.
+    * @apiParam {ObjectId} user_id User who create the sesison.
+    * @apiParam {ObjectId} exercise_id Exercise type of the session.
+    * @apiParam {Number} start_time Session start time.
+    * @apiParam {Number} end_time Session end time.
+    * @apiParam {Array} slot User's heart rate recorded during session e.g:  {"secondsElapsed":10,"heartRate":79,"location":{"lat":122, "long":14}}.
+    * @apiParam {String} heartRate Session heart rate stats e.g: {"min": 70, "max": 160, "average": 120}
+    * @apiParam {Number} calories Session total calories burned.
     */
     .post(function(req, res, next) {
       SessionService.create({
