@@ -69,12 +69,12 @@ module.exports = function(passport) {
         User.findOne({ 'facebook.token':  token},
           function(err, user) {
             if(err) {
-              return done(err)
+              return done(err);
             }
             if(!user) {
-              return done(null, false)
+              return done(null, false);
             }
-            return done(null, user, { scope: 'all' })
+            return done(null, user, { scope: 'all' });
           }
         );
       }
@@ -86,11 +86,11 @@ module.exports = function(passport) {
     // Get images && friend list
     console.log(profile);
     // asynchronous
-    console.log(token)
-    request("https://graph.facebook.com/me/friends?access_token=" + token, function(err, r, body) {
-      console.log(err, body);
-      console.log("Got stuff!");
-    });
+    console.log(token);
+    // request("https://graph.facebook.com/me/friends?access_token=" + token, function(err, r, body) {
+      // console.log(err, body);
+      // console.log("Got stuff!");
+    // });
     process.nextTick(function() {
       console.log('nextTick');
       // find the user in the database based on their facebook id
@@ -107,7 +107,7 @@ module.exports = function(passport) {
           user.facebook.token = token;
           user.save(function(err,doc) {
             return done(null, user); // user found, return that user
-          })
+          });
         } else {
 
           console.log('No User Found. Creating new user');
