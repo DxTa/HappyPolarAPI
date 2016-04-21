@@ -8,10 +8,12 @@ module.exports = function(router) {
     /**
     * @api {get} /sessions Get All Session
     * @apiVersion 0.1.0
+    * @apiHeader {String} Authorization Bearer authorization key.
     * @apiName GetSessions
     * @apiGroup Session
     */
     .get(function(req, res, next) {
+      console.log('GET /sessions');
       SessionService.index({
           'req': req
         },function(err,sessions) {
@@ -28,6 +30,7 @@ module.exports = function(router) {
     /**
     * @api {post} /sessions Create a new Session
     * @apiVersion 0.1.0
+    * @apiHeader {String} Authorization Bearer authorization key.
     * @apiName PostSession
     * @apiGroup Session
     *
@@ -61,6 +64,7 @@ module.exports = function(router) {
     /**
     * @api {get} /sessions/:id Get a single Session information
     * @apiVersion 0.1.0
+    * @apiHeader {String} Authorization Bearer authorization key.
     * @apiName GetSession
     * @apiGroup Session
     *
@@ -83,6 +87,7 @@ module.exports = function(router) {
     /**
     * @api {put} /sessions/:id update an Session
     * @apiVersion 0.1.0
+    * @apiHeader {String} Authorization Bearer authorization key.
     * @apiName PutSession
     * @apiGroup Session
     *
@@ -108,6 +113,7 @@ module.exports = function(router) {
     /**
     * @api {delete} /sessions/:id Delete a single Session
     * @apiVersion 0.1.0
+    * @apiHeader {String} Authorization Bearer authorization key.
     * @apiName DeleteSession
     * @apiGroup Session
     *
