@@ -1,15 +1,29 @@
 var passport = require('passport');
 var UserService = require('../../services/user');
+var SessionService = require('../../services/session');
+//nested routers for session
+//pass {mergeParams: true} if want to access the params from the parent router.
+var express = require('express');
+var sessionRouter = express.Router({mergeParams: true});
 
-module.exports = function(router) {
+module.exports = function(router) {   
+
+  /*
+  *  Nested Session resource
+  */
+  // nest Session router by attaching it as muserIddleware
+  router.use('/users/:userId/sessions', sessionRouter);
+
   router.route('/users')
     /**
     * @api {get} /users Get All User
     * @apiVersion 0.1.0
+    * @apiHeader {String} Authorization Bearer authorization key.
     * @apiName GetUsers
     * @apiGroup User
     */
     .get(passport.authenticate('bearer', { session: false }),function(req, res, next) {
+      console.log('GET /users');
       UserService.index({
           'req': req
         },function(err,users) {
@@ -27,7 +41,7 @@ module.exports = function(router) {
     /**
     * @api {post} /users Create a new User
     * @apiVersion 0.1.0
-    * @apiName PostUser
+    * @apiHeader {String} Authorization Bearer authorization key.    * @apiName PostUser
     * @apiGroup User
     *
     * @apiParam {String} name User name.
@@ -54,14 +68,15 @@ module.exports = function(router) {
       });
     });
 
-  router.route('/users/:id')
+  router.route('/users/:userId')
     /**
-    * @api {get} /users/:id Get a single User information
+    * @api {get} /users/:userId Get a single User information
     * @apiVersion 0.1.0
+    * @apiHeader {String} Authorization Bearer authorization key.
     * @apiName GetUser
     * @apiGroup User
     *
-    * @apiParam {String} id User ID.
+    * @apiParam {String} userId User ID.
     */
     .get(passport.authenticate('bearer', { session: false }),function(req, res, next) {
       UserService.show({
@@ -78,12 +93,13 @@ module.exports = function(router) {
       });
     })
     /**
-    * @api {put} /users/:id update an User
+    * @api {put} /users/:userId update an User
     * @apiVersion 0.1.0
+    * @apiHeader {String} Authorization Bearer authorization key.
     * @apiName PutUser
     * @apiGroup User
     *
-    * @apiParam {String} id User ID.
+    * @apiParam {String} userId User ID.
     * @apiParam {String} name User new name.
     * @apiParam {Number} age User new age.
     * @apiParam {Number} height User new height.
@@ -105,12 +121,13 @@ module.exports = function(router) {
       });
     })
     /**
-    * @api {delete} /users/:id Delete a single User
+    * @api {delete} /users/:userId Delete a single User
     * @apiVersion 0.1.0
+    * @apiHeader {String} Authorization Bearer authorization key.
     * @apiName DeleteUser
     * @apiGroup User
     *
-    * @apiParam {String} id User ID.
+    * @apiParam {String} userId User ID.
     */
     .delete(passport.authenticate('bearer', { session: false }),function(req, res, next) {
       UserService.destroy({
@@ -126,4 +143,30 @@ module.exports = function(router) {
         }
       });
     });
+
+
+    sessionRouter.route('/')
+    /**
+    * @api {get} /users/:userId/sessions Get All Session of an User
+    * @apiVersion 0.1.0
+    * @apiHeader {String} Authorization Bearer authorization key.
+    * @apiName GetSessionbyUserId
+    * @apiGroup User
+    */
+      .get(passport.authenticate('bearer', { session: false }),function(req, res, next) {
+        console.log('GET /users/:userId/sessions');
+        console.log('userId: '+req.params.userId);
+        SessionService.show({
+            'req': req
+          }, function(err,sessions) {
+          if (err) {
+            console.log('error:'+err);
+            res.status(404);
+            res.json({ error: err });
+          }
+          else {
+            res.json(sessions);
+          }
+        });
+      });
 }

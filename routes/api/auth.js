@@ -18,7 +18,8 @@ module.exports = function(router) {
   * @apiSuccess successRedirect '/profile'
   * @apiError failureRedirect '/'
   * @apiSampleRequest off
-  */
+  */  
+  // Client App/ Token Authentication
   router.get('/auth/facebook', passport.authenticate('facebook', { scope : ['email','user_friends','public_profile'] }));
 
   // handle the callback after facebook has authenticated the user
@@ -29,6 +30,13 @@ module.exports = function(router) {
     })
   );
 
+  /**
+  * @api {post} /auth/facebook/token Facebook App Authentication
+  * @apiVersion 0.1.0
+  * @apiHeader {String} Authorization Bearer authorization key.
+  * @apiName PostFacebookToken
+  * @apiGroup Authentication
+  */
   // Client App/ Token Authentication
   router.post('/auth/facebook/token',
     passport.authenticate('facebook-token'),

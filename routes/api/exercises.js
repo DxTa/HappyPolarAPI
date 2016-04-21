@@ -4,13 +4,15 @@ var ExerciseService = require('../../services/exercise');
 
 
 module.exports = function(router) {
-  /**
-  * @api {get} /exercises Get All Exercises
-  * @apiVersion 0.1.0
-  * @apiName GetExercises
-  * @apiGroup Exercise
-  */
+
   router.route('/exercises')
+    /**
+    * @api {get} /exercises Get All Exercises
+    * @apiVersion 0.1.0
+    * @apiHeader {String} Authorization Bearer authorization key.
+    * @apiName GetExercises
+    * @apiGroup Exercise
+    */
     .get(function(req, res, next) {
       console.log('index');
       ExerciseService.index({
@@ -29,6 +31,7 @@ module.exports = function(router) {
     /**
     * @api {post} /exercises Create a new Exercise
     * @apiVersion 0.1.0
+    * @apiHeader {String} Authorization Bearer authorization key.
     * @apiName PostExercise
     * @apiGroup Exercise
     *
@@ -56,6 +59,7 @@ module.exports = function(router) {
     /**
     * @api {get} /exercises/:id Get a single Exercise information
     * @apiVersion 0.1.0
+    * @apiHeader {String} Authorization Bearer authorization key.
     * @apiName GetExercise
     * @apiGroup Exercise
     *
@@ -79,6 +83,7 @@ module.exports = function(router) {
     /**
     * @api {put} /exercises/:id update an Exercise
     * @apiVersion 0.1.0
+    * @apiHeader {String} Authorization Bearer authorization key.
     * @apiName PutExercise
     * @apiGroup Exercise
     *
@@ -105,6 +110,7 @@ module.exports = function(router) {
     /**
     * @api {delete} /exercises/:id Delete a single Exercise
     * @apiVersion 0.1.0
+    * @apiHeader {String} Authorization Bearer authorization key.
     * @apiName DeleteExercise
     * @apiGroup Exercise
     *

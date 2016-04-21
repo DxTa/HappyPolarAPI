@@ -15,11 +15,21 @@ var index = function(params,callback) {
 
 var show = function(params,callback) {
   var validatedRequest = Utils.validate(params.req);
-  if (validatedRequest.valid == true) {
-    console.log('findById');
-    Session.findById(params.req.params.id, function(err,session) {
-      callback(err,session);
-    });
+  if (validatedRequest.valid == true) {    
+    if (params.req.params.userId) {
+      //show Session by sessionId
+      console.log('findById sessionId');
+      Session.find({"user_id":params.req.params.userId}, function(err,session) {
+        callback(err,session);
+      });
+    }
+    else {
+      //show Session by userId
+      console.log('findById userId');
+      Session.findById(params.req.params.id, function(err,session) {
+        callback(err,session);
+      });
+    }
   }
   else{
     callback(validatedRequest.error);
