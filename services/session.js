@@ -93,14 +93,14 @@ var create = function(params,callback) {
       if (params.req.body.end_time)
         session.end_time = params.req.body.end_time;
       if (params.req.body.slot) {
-        session.slot = [];    
-        var slotObj = JSON.parse(params.req.body.slot);
-        for (var i = 0; i < slotObj.length; i++) {     
+        session.slot = [];
+        var slotObj = params.req.body.slot;
+        for (var i = 0; i < slotObj.length; i++) {
           session.slot.push(slotObj[i]);
         }
       }
-      if (params.req.body.heart_rate) {     
-        var heartRateObj = JSON.parse(params.req.body.heart_rate);
+      if (params.req.body.heart_rate) {
+        var heartRateObj = params.req.body.heart_rate;
         session.heart_rate = {
           min: heartRateObj.min,
           max: heartRateObj.max,
