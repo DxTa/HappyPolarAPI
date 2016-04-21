@@ -10,12 +10,12 @@ var index = function(params,callback) {
   }
   else{
     callback(validatedRequest.error);
-  }  
+  }
 }
 
 var show = function(params,callback) {
   var validatedRequest = Utils.validate(params.req);
-  if (validatedRequest.valid == true) {    
+  if (validatedRequest.valid == true) {
     if (params.req.params.userId) {
       //show Session by sessionId
       console.log('findById sessionId');
@@ -53,13 +53,13 @@ var update = function(params,callback) {
     if (params.req.body.end_time)
       update.end_time = params.req.body.end_time;
     if (params.req.body.slot) {
-      update.slot = [];    
+      update.slot = [];
       var slotObj = JSON.parse(params.req.body.slot);
-      for (var i = 0; i < slotObj.length; i++) {     
+      for (var i = 0; i < slotObj.length; i++) {
         update.slot.push(slotObj[i]);
       }
     }
-    if (params.req.body.heart_rate) {     
+    if (params.req.body.heart_rate) {
       var heartRateObj = JSON.parse(params.req.body.heart_rate);
       update.heart_rate = {
         min: heartRateObj.min,
@@ -93,13 +93,18 @@ var create = function(params,callback) {
       if (params.req.body.end_time)
         session.end_time = params.req.body.end_time;
       if (params.req.body.slot) {
-        session.slot = [];    
-        var slotObj = JSON.parse(params.req.body.slot);
-        for (var i = 0; i < slotObj.length; i++) {     
-          session.slot.push(slotObj[i]);
+        session.slot = [];
+        try {
+          var slotObj = JSON.parse(params.req.body.slot);
+          for (var i = 0; i < slotObj.length; i++) {
+            session.slot.push(slotObj[i]);
+          }
+        }
+        catch(err) {
+          console.log(params.req.body.slot);
         }
       }
-      if (params.req.body.heart_rate) {     
+      if (params.req.body.heart_rate) {
         var heartRateObj = JSON.parse(params.req.body.heart_rate);
         session.heart_rate = {
           min: heartRateObj.min,
