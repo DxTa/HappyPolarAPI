@@ -4,9 +4,23 @@ var Utils = require('../services/utils');
 var index = function(params,callback) {
   var validatedRequest = Utils.validate(params.req);
   if (validatedRequest.valid == true) {
-    Session.find(function(err,sessions) {
-      callback(err,sessions);
-    });
+    if (params.req.query.from_time) {
+      var query = {};        
+        query.end_time = {"$gte": params.req.query.from_time};      
+      if (params.req.query.to_time) {
+        query.start_time = {"$lte": params.req.query.to_time};
+      }      
+      console.log("index in selected time window "+JSON.stringify(query));
+      Session.find(query, function(err,sessions) {
+        callback(err,sessions);
+      });
+    }
+    else {
+      console.log("index");
+      Session.find(function(err,sessions) {
+        callback(err,sessions);
+      });
+    } 
   }
   else{
     callback(validatedRequest.error);
