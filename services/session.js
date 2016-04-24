@@ -4,23 +4,22 @@ var Utils = require('../services/utils');
 var index = function(params,callback) {
   var validatedRequest = Utils.validate(params.req);
   if (validatedRequest.valid == true) {
-    if (params.req.query.from_time) {
-      var query = {};        
+    console.log("index");
+    var query = {};
+    //check filter params and add to query
+    if (params.req.query.from_time) {      
         query.end_time = {"$gte": params.req.query.from_time};      
       if (params.req.query.to_time) {
         query.start_time = {"$lte": params.req.query.to_time};
-      }      
-      console.log("index in selected time window "+JSON.stringify(query));
-      Session.find(query, function(err,sessions) {
-        callback(err,sessions);
-      });
+      }
     }
-    else {
-      console.log("index");
-      Session.find(function(err,sessions) {
-        callback(err,sessions);
-      });
-    } 
+    if (params.req.params.userId) {
+      query.user_id = params.req.params.userId;
+    }
+    //execute query
+    Session.find(query, function(err,sessions) {
+      callback(err,sessions);
+    });
   }
   else{
     callback(validatedRequest.error);
@@ -30,10 +29,11 @@ var index = function(params,callback) {
 var show = function(params,callback) {
   var validatedRequest = Utils.validate(params.req);
   if (validatedRequest.valid == true) {    
+    console.log("show");
     if (params.req.params.userId) {
       //show Session by sessionId
       console.log('findById sessionId');
-      Session.find({"user_id":params.req.params.userId}, function(err,session) {
+      Session.find({"user_id":params.req.params.id}, function(err,session) {
         callback(err,session);
       });
     }
@@ -58,8 +58,11 @@ var update = function(params,callback) {
       'new': true,
       'runValidators': true
     };
-    if (params.req.body.user_id)
+    //userId from request body OR from url (/users/:userId/sessions)
+    if (params.req.body.user_id) // from body
       update.user_id = params.req.body.user_id;
+    else if (params.req.params.userId) // from url
+      update.user_id = params.req.params.userId;
     if (params.req.body.exercise_id)
       update.exercise_id = params.req.body.exercise_id;
     if (params.req.body.start_time)
@@ -68,13 +71,13 @@ var update = function(params,callback) {
       update.end_time = params.req.body.end_time;
     if (params.req.body.slot) {
       update.slot = [];    
-      var slotObj = JSON.parse(params.req.body.slot);
+      var slotObj = params.req.body.slot;
       for (var i = 0; i < slotObj.length; i++) {     
         update.slot.push(slotObj[i]);
       }
     }
     if (params.req.body.heart_rate) {     
-      var heartRateObj = JSON.parse(params.req.body.heart_rate);
+      var heartRateObj = params.req.body.heart_rate;
       update.heart_rate = {
         min: heartRateObj.min,
         max: heartRateObj.max,
@@ -98,8 +101,11 @@ var create = function(params,callback) {
   if (params.req) {
     var validatedRequest = Utils.validate(params.req);
     if (validatedRequest.valid == true) {
-      if (params.req.body.user_id)
+      //userId from request body OR from url (/users/:userId/sessions)
+      if (params.req.body.user_id) // from body
         session.user_id = params.req.body.user_id;
+      else if (params.req.params.userId) // from url
+        session.user_id = params.req.params.userId;
       if (params.req.body.exercise_id)
         session.exercise_id = params.req.body.exercise_id;
       if (params.req.body.start_time)

@@ -1,3 +1,6 @@
+var express = require('express');
+var router = express.Router();
+
 var passport = require('passport');
 var request = require("request");
 
@@ -7,49 +10,48 @@ var request = require("request");
 // route for facebook authentication and login
 
 
-module.exports = function(router) {
+/**
+* @api {get} /auth/facebook Facebook Web Authentication
+* @apiVersion 0.1.0
+* @apiName GetFacebook
+* @apiGroup Authentication
+*
+* @apiSuccess successRedirect '/profile'
+* @apiError failureRedirect '/'
+* @apiSampleRequest off
+*/  
+// Client App/ Token Authentication
+router.get('/facebook', passport.authenticate('facebook', { scope : ['email','user_friends','public_profile'] }));
 
-  /**
-  * @api {get} /auth/facebook Facebook Web Authentication
-  * @apiVersion 0.1.0
-  * @apiName GetFacebook
-  * @apiGroup Authentication
-  *
-  * @apiSuccess successRedirect '/profile'
-  * @apiError failureRedirect '/'
-  * @apiSampleRequest off
-  */  
-  // Client App/ Token Authentication
-  router.get('/auth/facebook', passport.authenticate('facebook', { scope : ['email','user_friends','public_profile'] }));
+// handle the callback after facebook has authenticated the user
+router.get('/facebook/callback',
+  passport.authenticate('facebook', {
+    successRedirect : '/users',
+    failureRedirect : '/'
+  })
+);
 
-  // handle the callback after facebook has authenticated the user
-  router.get('/auth/facebook/callback',
-    passport.authenticate('facebook', {
-      successRedirect : '/users',
-      failureRedirect : '/'
-    })
-  );
-
-  /**
-  * @api {post} /auth/facebook/token Facebook App Authentication
-  * @apiVersion 0.1.0
-  * @apiHeader {String} Authorization Bearer authorization key.
-  * @apiName PostFacebookToken
-  * @apiGroup Authentication
-  */
-  // Client App/ Token Authentication
-  router.post('/auth/facebook/token',
-    passport.authenticate('facebook-token'),
-    function(req, res) {
-      if (req.user){
-        // do something with req.user
-        res.status(200);
-        res.send(req.user);
-      }
-      else {
-        // authentication failed
-        res.send(401);
-      }
+/**
+* @api {post} /auth/facebook/token Facebook App Authentication
+* @apiVersion 0.1.0
+* @apiHeader {String} Authorization Bearer authorization key.
+* @apiName PostFacebookToken
+* @apiGroup Authentication
+*/
+// Client App/ Token Authentication
+router.post('/facebook/token',
+  passport.authenticate('facebook-token'),
+  function(req, res) {
+    if (req.user){
+      // do something with req.user
+      res.status(200);
+      res.send(req.user);
     }
-  );
-};
+    else {
+      // authentication failed
+      res.send(401);
+    }
+  }
+);
+
+module.exports = router;

@@ -17,7 +17,7 @@ var show = function(params,callback) {
   var validatedRequest = Utils.validate(params.req);
   if (validatedRequest.valid == true) {
     console.log('findById');
-    User.findById(params.req.params.id, function(err,user) {
+    User.findById(params.req.params.userId, function(err,user) {
       callback(err,user);
     });
   }
@@ -45,7 +45,7 @@ var update = function(params,callback) {
     if (params.req.body.gender)
       update.gender = params.req.body.gender;
 
-    User.findOneAndUpdate({"_id":params.req.params.id}, update, options, function(err,user) {
+    User.findOneAndUpdate({"_id":params.req.params.userId}, update, options, function(err,user) {
       callback(err,user);
     });
   }
@@ -96,7 +96,7 @@ var destroy = function(params,callback) {
   var validatedRequest = Utils.validate(params.req);
   if (validatedRequest.valid == true) {
     User.remove({
-      _id: params.req.params.id
+      _id: params.req.params.userId
     }, function(err, user) {
       callback(err,user)
     });

@@ -3,9 +3,9 @@ var router = express.Router();
 var passport = require('passport');
 
 //routes
-require('./api/auth')(router);
-require('./api/users')(router);
-require('./api/exercises')(router);
-require('./api/sessions')(router);
+router.use('/auth', require('./api/auth'));
+router.use('/users', require('./api/users'));
+router.use('/exercises', require('./api/exercises'));
+router.use('/sessions', require('./api/sessions'));
 
 module.exports = router;
