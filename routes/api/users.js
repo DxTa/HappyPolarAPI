@@ -5,6 +5,13 @@ var passport = require('passport');
 var UserService = require('../../services/user');
 
 // Nested sessions in users. GET all sessions from one user
+/**
+* @api {get} /users/:userId/sessions Get Sessions of an User
+* @apiVersion 0.1.0
+* @apiHeader {String} Authorization Bearer authorization key.
+* @apiName GetSessionsByUser
+* @apiGroup Session
+*/
 router.use('/:userId/sessions', require('./sessions'));
 
 router.route('/')
@@ -87,7 +94,7 @@ router.route('/:userId')
     });
   })
   /**
-  * @api {put} /users/:userId update an User
+  * @api {put} /users/:userId Update an User
   * @apiVersion 0.1.0
   * @apiHeader {String} Authorization Bearer authorization key.
   * @apiName PutUser

@@ -86,7 +86,7 @@ router.route('/:id')
     });
   })
   /**
-  * @api {put} /sessions/:id update an Session
+  * @api {put} /sessions/:id Update an Session
   * @apiVersion 0.1.0
   * @apiHeader {String} Authorization Bearer authorization key.
   * @apiName PutSession

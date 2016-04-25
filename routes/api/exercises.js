@@ -4,7 +4,14 @@ var router = express.Router({mergeParams: true});
 var passport = require('passport');
 var ExerciseService = require('../../services/exercise');
 
-// Nested sessions in users. GET all sessions from one user
+// Nested sessions in exercise. GET all sessions of one exercise type
+/**
+* @api {get} /exercises/:exerciseId/sessions Get Sessions of an Exercise
+* @apiVersion 0.1.0
+* @apiHeader {String} Authorization Bearer authorization key.
+* @apiName GetSessionByExercise
+* @apiGroup Session
+*/
 router.use('/:exerciseId/sessions', require('./sessions'));
 
 router.route('/')
@@ -83,7 +90,7 @@ router.route('/:id')
     })
   })
   /**
-  * @api {put} /exercises/:id update an Exercise
+  * @api {put} /exercises/:id Update an Exercise
   * @apiVersion 0.1.0
   * @apiHeader {String} Authorization Bearer authorization key.
   * @apiName PutExercise
