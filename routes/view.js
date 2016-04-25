@@ -16,6 +16,10 @@ router.get('/exercises', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/home', function(req, res, next) {
+  res.render('index', { title: 'Express' });
+});
+
 router.get('/exercises/:id/sessions', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
