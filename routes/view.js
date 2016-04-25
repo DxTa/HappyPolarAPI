@@ -12,6 +12,14 @@ router.get('/profile', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+router.get('/exercises', function(req, res, next) {
+  res.render('index', { title: 'Express' });
+});
+
+router.get('/exercises/:id/sessions', function(req, res, next) {
+  res.render('index', { title: 'Express' });
+});
+
 /* GET User Profile page. */
 router.get('/users', function(req, res, next) {
  res.render('users', {
