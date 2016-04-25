@@ -12,9 +12,8 @@ router.route('/')
   * @apiName GetSessions
   * @apiGroup Session
   */
-  .get(function(req, res, next) {
+  .get(passport.authenticate('bearer', { session: false }), function(req, res, next) {
     console.log('GET /sessions');
-    console.log('userId: '+req.params.userId);
     SessionService.index({
         'req': req
       },function(err,sessions) {
@@ -43,7 +42,7 @@ router.route('/')
   * @apiParam {String} heartRate Session heart rate stats e.g: {"min": 70, "max": 160, "average": 120}
   * @apiParam {Number} calories Session total calories burned.
   */
-  .post(function(req, res, next) {
+  .post(passport.authenticate('bearer', { session: false }), function(req, res, next) {
     console.log('POST /sessions');
     SessionService.create({
         'req': req
@@ -72,7 +71,7 @@ router.route('/:id')
   *
   * @apiParam {String} id Session ID.
   */
-  .get(function(req, res, next) {
+  .get(passport.authenticate('bearer', { session: false }), function(req, res, next) {
     SessionService.show({
         'req': req
       }, function(err,session) {
@@ -98,7 +97,7 @@ router.route('/:id')
   * @apiParam {Array} time Session time.
   * @apiParam {Number} pulse Session pulse.
   */
-  .put(function(req, res, next) {    
+  .put(passport.authenticate('bearer', { session: false }), function(req, res, next) {    
     console.log('PUT /sessions');
     SessionService.update({
         'req': req
@@ -122,7 +121,7 @@ router.route('/:id')
   *
   * @apiParam {String} id Session ID.
   */
-  .delete(function(req, res, next) {
+  .delete(passport.authenticate('bearer', { session: false }), function(req, res, next) {
     SessionService.destroy({
         'req':req
       }, function(err, session) {

@@ -4,6 +4,9 @@ var router = express.Router({mergeParams: true});
 var passport = require('passport');
 var ExerciseService = require('../../services/exercise');
 
+// Nested sessions in users. GET all sessions from one user
+router.use('/:exerciseId/sessions', require('./sessions'));
+
 router.route('/')
   /**
   * @api {get} /exercises Get All Exercises
@@ -12,7 +15,7 @@ router.route('/')
   * @apiName GetExercises
   * @apiGroup Exercise
   */
-  .get(function(req, res, next) {
+  .get(passport.authenticate('bearer', { session: false }), function(req, res, next) {
     console.log('GET /exercises');
     ExerciseService.index({
       'req': req
@@ -38,7 +41,7 @@ router.route('/')
   * @apiParam {String} description Exercise description.
   * @apiParam {String} image Exercise image url.
   */
-  .post(function(req, res, next) {
+  .post(passport.authenticate('bearer', { session: false }), function(req, res, next) {
     console.log('POST /exercises');
     ExerciseService.create({
       'req': req
@@ -64,7 +67,7 @@ router.route('/:id')
   *
   * @apiParam {String} id Exercise ID.
   */
-  .get(function(req, res, next) {
+  .get(passport.authenticate('bearer', { session: false }), function(req, res, next) {
     console.log('GET /exercises/:id');
     ExerciseService.show({
       'req': req
@@ -91,7 +94,7 @@ router.route('/:id')
   * @apiParam {String} description Exercise new description.
   * @apiParam {String} image Exercise new image url.
   */
-  .put(function(req, res, next) {
+  .put(passport.authenticate('bearer', { session: false }), function(req, res, next) {
     console.log('PUT /exercises/:id');
     ExerciseService.update({
         'req':req
@@ -115,7 +118,7 @@ router.route('/:id')
   *
   * @apiParam {String} id Exercise ID.
   */
-  .delete(function(req, res, next) {
+  .delete(passport.authenticate('bearer', { session: false }), function(req, res, next) {
     console.log('DELETE /exercises/:id');
     ExerciseService.destroy({
         'req':req

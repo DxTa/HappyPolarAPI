@@ -13,8 +13,12 @@ var index = function(params,callback) {
         query.start_time = {"$lte": params.req.query.to_time};
       }
     }
-    if (params.req.params.userId) {
-      query.user_id = params.req.params.userId;
+
+    //users can only see their own sessions
+    query.user_id = params.req.user.id;
+
+    if (params.req.params.exerciseId) {
+      query.exercise_id = params.req.params.exerciseId;
     }
     //execute query
     Session.find(query, function(err,sessions) {
